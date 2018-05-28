@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Assignment: Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+      .nav-tabs { border:0; }
+      .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+         border-width: 0;font-weight: 1000;
+       }
+      .nav-tabs > li > a { 
+        border: none; color: #464545; font-size: 15px;
+      }
+      .nav-tabs > li.active > a  ,.nav-tabs > li > a:hover ,.nav-tabs > li.active > a:hover{ 
+        border: none; color: #1d1d1d !important; background: transparent; 
+      }
+      .nav-tabs > li > a::after { 
+        content: ""; background: #1d1d1d; height: 2px; position: absolute; width: 100%; left: 0px; bottom: -1px; transition: all 250ms ease 0s; transform: scale(0); 
+      }
+      .nav-tabs > li.active > a::after , .nav-tabs > li:hover > a::after { 
+        transform: scale(1); 
+      }
+      .tab-pane { 
+        padding: 15px 0; 
+      }
+      .tab-content{
+        padding:20px;
+      }
+      .vertical-center {
+        min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+        min-height: 100vh; /* These two lines are counted as one :-)       */
+
+        display: flex;
+        align-items: center;
+      }
+
+      .form-control {
+        background: rgba(0,0,0,0.75);
+        position: relative;
+        font-size: 15px;
+        color: white;
+        padding: 10px;
+        border:none;
+      }
+
+
+      .progress{
+        background-color: #f5f5f500;
+      }
+      .bs-wizard {
+        border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;
+      }
+      .bs-wizard > .bs-wizard-step {
+        padding: 0; position: relative;
+      }
+      .bs-wizard > .bs-wizard-step + .bs-wizard-step {}
+      .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color:#ccc; font-size: 16px; padding-top: 0px;}
+      .bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; height: 30px; display: block; background: #ffffff00; top: 25px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%;}
+      .bs-wizard > .bs-wizard-step.active > .bs-wizard-dot,.bs-wizard > .bs-wizard-step.complete > .bs-wizard-dot {background:#afafafe3} 
+      .bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content: ' '; width: 14px; height: 14px; background: #ffffff00; border-radius: 50px; position: absolute; top: 8px; left: 8px; } 
+        .bs-wizard > .bs-wizard-step.active > .bs-wizard-dot:after{background: #1d1d1d;}
+        .bs-wizard > .bs-wizard-step.complete > .bs-wizard-dot:after{background: #ffffff7a;}
+      .bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 20px 0;}
+      .bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #afafafe3;}
+      .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
+      .bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {width:50%;}
+      .bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {width:0%;}
+      .bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {width: 100%;}
+      .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {background-color: white;}
+      .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {opacity: 0;}
+      .bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}
+      .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
+      .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
+      .bs-wizard-stepnum small{
+        font-weight: 700;
+        color: white;
+      }
+      .bs-wizard-step.active .bs-wizard-stepnum small {
+          font-weight: 700;
+          font-size: medium;
+          color: white;
+      }
+
+      label{
+        padding-top: 6px;
+        margin-top: 5px;
+        margin-bottom: 5px;    
+        color: #1d1d1d;
+        font-size: 15px;
+      }
+      .form-group div input,.form-group span{margin-top: 5px;margin-bottom: 5px;}
+      #cnt{
+        padding: 0;
+      }
+      #banner{
+        height:400px;
+        background-image: url('af2008e0d300f6fd3ca5b2617a06dff6.jpg');
+          /* padding: 0; */
+          background-size: cover;
+        padding-left: : 15px;
+        padding-right: 15px;
+      }
+      #si{
+        height:400px;
+        background-color:#fefefea6; 
+      }
+      #sgn{
+        height: 75%;
+        padding-top: 5px;
+      }
+      .background-image {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: -1000;
+
+        display: block;
+        background-image: url('af2008e0d300f6fd3ca5b2617a06dff6.jpg');
+          /* padding: 0; */
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+      }
+      h1{
+         color: #ffffffc4;
+        font-size: 80px;
+        font-family: sans-serif;
+        font-weight: 800;
+      }
+      .text-danger {
+          color: #da0400;
+      }
+
+      #si{
+        padding: 0;
+      }
+      div.tab-content{
+        height:357px;
+      }
+      #home>.pager{
+        margin-top: 92px;
+      }
+      #menu1>.pager{
+        margin-top: 85px;
+      }
+      #menu2>.pager{
+        margin-top:67px;
+      }
+      .pager li a,.btn{
+          
+          background: #1d1d1d;
+          box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.26);
+          background-color: #1d1d1d;
+          color:white;
+          border-radius: 2px;
+          border-color: #69696900;
+      }
+      .pager li>a:focus, .pager li>a:hover,.btn:hover {
+          transition: .4s;
+          box-shadow: 0 0 15px #000000;
+          background: #1d1d1d;
+          background-color: #1d1d1d;
+          color:white;
+          border-radius: 2px;
+          border-color: #69696900;
+          /* border: 1px solid #FFA000; */
+      }
+      .has-error .form-control{
+        box-shadow: inset 0 0 10px rgb(245, 238, 238), inset 0 0 30px #f70505;;
+      }
+
+    </style>  
+  </head>
+  
+  <body>
+    <div class="background-image">
+    </div>
+    <div class="vertical-center">
+        <div id="cnt" class="col-md-offset-1 col-md-10">
+          <div id="banner" class="col-md-4">
+            <div id="sgn" class="text-center">
+              <h1>SIGN UP</h1>
+            </div>
+            <div id="pr" class="row bs-wizard" style="border-bottom:0;">
+              <div id="st1" class="col-md-4 bs-wizard-step active">
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="text-center bs-wizard-stepnum"><small>Registration</small></div>
+              </div>
+              
+              <div id="st2" class="col-md-4 bs-wizard-step">
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="text-center bs-wizard-stepnum"><small>Personal Details</small></div>
+              </div>
+              
+              <div id="st3" class="col-md-4 bs-wizard-step">
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="text-center bs-wizard-stepnum"><small>Contact Details</small></div>
+              </div>
+            </div>
+          </div>
+          <div id="si" class="col-md-8">
+            <div id="fm">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#home">Registration</a></li>
+                <li><a href="#menu1">Personal Details</a></li>
+                <li><a href="#menu2">Contact Details</a></li>
+              </ul>
+              <form id="my_form">
+                <div>
+                  <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                      <div id="NM" class="form-group row">
+                          <label for="uname" class="col-md-3 col-form-label">Username:</label>
+                          <div class="col-md-6">
+                            <input type="text" class="form-control" id="uname" placeholder="Enter your username">
+                          </div>
+                          <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <div id="PD1" class="form-group row">
+                          <label for="pwd" class="col-md-3 col-form-label">Password:</label>
+                          <div class="col-md-6">
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                          </div>
+                          <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <div id="PD2" class="form-group row">
+                          <label for="cpwd" class="col-md-3 col-form-label">Confirm Password:</label>
+                          <div class="col-md-6">
+                            <input type="password" class="form-control" id="cpwd" placeholder="Confirm password">
+                          </div>
+                          <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <ul class="pager">
+                        <li class="next"><a id="nx-bt01" href="#">Next</a></li>
+                      </ul>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                      <div id="FN" class="form-group row">
+                        <label for="fname" class="col-md-3 col-form-label">Full name:</label>
+                        <div class="col-md-6">
+                          <input type="text" class="form-control" id="fname" placeholder="Enter your full name"/>
+                        </div>
+                        <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <div id="DB" class="form-group row">
+                        <label for="dob" class="col-md-3 col-form-label">Date of birth:</label>
+                        <div class="col-md-6">
+                          <input type="date" id="dob" class="form-control">
+                        </div>
+                        <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <div id="GR" class="form-group row">
+                        <label for="gender" class="col-md-3 col-form-label">Gender:</label>
+                        <div class="radio col-md-6">
+                          <label><input type="radio" name="gender" value="male" required>Male</label>
+                          <label><input type="radio" name="gender" value="female">Female</label>
+                        </div>
+                        <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <ul class="pager">
+                        <li class="previous"><a id="pv-bt01" href="#">Previous</a></li>
+                        <li class="next"><a id="nx-bt02" href="#">Next</a></li>
+                      </ul>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                      <div id="EM" class="form-group row">
+                        <label for="email" class="col-md-3 col-form-label">E-mail:</label>
+                        <div class="col-md-6">
+                          <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                        </div>
+                        <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <div id="PH" class="form-group row">
+                        <label for="mob" class="col-md-3 col-form-label">Contact Number:</label>
+                        <div class="col-md-6">
+                          <input type="text" class="form-control" id="mob" placeholder="Enter your contact number">
+                        </div>
+                        <span class="text-danger col-md-3"><small></small></span>
+                      </div>
+                      <div id="AD" class="form-group row">
+                        <label for="adrs" class="col-md-3 col-form-label">Address:</label>
+                        <div class="col-md-6">
+                          <textarea class="form-control" rows="3" id="adrs" style="resize:none;" placeholder="Address..."></textarea>
+                        </div>
+                      </div>
+                      <div class="pager row">
+                        <li class="previous"><a id="pv-bt02" href="#">Previous</a></li>
+                        <input type="submit" class="btn btn-success pull-right" value="submit">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div id="rst" class="container-fluid">
+              <div class="row" style="padding:15px;">
+                <h2 style="display:inline;">This is Result:</h2>
+                <button id="shw-fm" class="btn btn-primary pull-right">
+                  Show form
+                </button>
+              </div>
+              <div id="rslt" class="text-center"></div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </body>
+  <script>
+  $("#rst").hide();
+  function validateR(){
+    unfmt=/^([A-Z]|[a-z]|[0-9]|_)+$/
+    rval=true;
+    $('#home').find(".text-danger small").text("");
+    $("#home").find(".has-error").removeClass("has-error has-feedback");
+    if($("#uname").val()==""){
+      $("#NM").addClass("has-error has-feedback");
+      $("#NM .text-danger small").text('Username is required');
+      rval=false;
+    }
+    else if(!unfmt.test($("#uname").val())){
+      $("#NM").addClass("has-error has-feedback");
+      $("#NM .text-danger small").text('Use only alphabets,digits and underscore(_)');
+      rval=false;
+    }
+    if($("#pwd").val().length<8){
+      $("#PD1").addClass("has-error has-feedback");
+      $("#PD1 .text-danger small").text('Password Should contain atleast 8 characters');
+      rval=false;
+    }
+    if($("#pwd").val()!=$("#cpwd").val()){
+      $("#PD2").addClass("has-error has-feedback");
+      $("#PD2 .text-danger small").text('Password Mismatch');
+      rval=false;
+    }
+    return rval
+  }
+  function validateP(){
+    fnfmt=/^(([A-Z]|[a-z])+)( ([A-Z]|[a-z])+)?$/
+    rval=true;
+    $("#menu1").find(".text-danger small").text("");
+    $("#menu1").find(".has-error").removeClass("has-error has-feedback");
+    if (!fnfmt.test($("#fname").val())) {
+      $("#FN").addClass("has-error has-feedback");
+      $("#FN .text-danger small").text('Name should only contain alphabets');
+      rval=false;
+    }
+    if ($("#dob").val()=="") {
+      $("#DB").addClass("has-error has-feedback");
+      $("#DB .text-danger small").text('Date of birth is required');
+      rval=false;
+    }
+    if($("#gender").val()==""){
+      $("#GR").addClass("has-error has-feedback");
+      $("#GR .text-danger small").text('please select Gender');
+      rval=false;
+    }
+    return rval
+  }
+  function validateC(){
+    emfmt=/\w(\w|\d|[-]|[_])*[@]\w+[.]\w+/;
+    rval=true;
+    $("#menu2").find(".text-danger small").text("");
+    $("#menu2").find(".has-error").removeClass("has-error has-feedback");
+    if (!emfmt.test($("#email").val())) {
+      $("#EM").addClass("has-error has-feedback");
+      $("#EM .text-danger small").text('E-Mail should be in format "xyz@abc.mno"');
+      rval=false;
+    }
+    if ($("#mob").val()=="") {
+      $("#PH").addClass("has-error has-feedback");
+      $("#PH .text-danger small").text('Contact number is required');
+      rval=false;
+    }
+    return rval
+  }
+  $(document).ready(function(){
+      $("#shw-fm").click(function(){
+        $('#st1').removeClass("complete").addClass('active');
+        $('#st2').removeClass("complete");
+        $('#st3').removeClass("complete");
+        $("#fm").show();
+        $("#rst").hide();
+        $('.nav-tabs a[href="#home"]').tab('show');
+        $('.nav-tabs a[href="#menu1"]').off("click");
+        $('.nav-tabs a[href="#menu2"]').off("click");
+        $('.nav-tabs a[href="#menu1"]').off("shown.bs.tab");
+        $('.nav-tabs a[href="#menu2"]').off("shown.bs.tab");
+        $('.nav-tabs a[href="#menu1"]').one("shown.bs.tab",function(){
+          $('#st1').removeClass("active").addClass('complete');
+          $('#st2').addClass('active');
+          $('.nav-tabs a[href="#home"]').click(function(){
+            activeTab=$("li.active a").attr("href");
+            if(activeTab=="#home"){
+              if(validateR()){
+                $(this).tab('show');
+              }
+            }
+            else if(activeTab="#menu1"){
+              if(validateP()){
+                $(this).tab('show');
+              }
+            }
+            else{
+              if(validateC()){
+                $(this).tab('show');
+              }
+            }
+          });
+          $('.nav-tabs a[href="#menu1"]').click(function(){
+            activeTab=$("li.active a").attr("href");
+            if(activeTab=="#home"){
+              if(validateR()){
+                $(this).tab('show');
+              }
+            }
+            else if(activeTab="#menu1"){
+              if(validateP()){
+                $(this).tab('show');
+              }
+            }
+            else{
+              if(validateC()){
+                $(this).tab('show');
+              }
+            }
+          });
+      });
+      $('.nav-tabs a[href="#menu2"]').one("shown.bs.tab",function(){
+          $('#st2').removeClass('active').addClass('complete');
+          $('#st3').addClass('active');
+          $('.nav-tabs a[href="#menu2"]').click(function(){
+            activeTab=$("li.active a").attr("href");
+            if(activeTab=="#home"){
+              if(validateR()){
+                $(this).tab('show');
+              }
+            }
+            else if(activeTab="#menu1"){
+              if(validateP()){
+                $(this).tab('show');
+              }
+            }
+            else{
+              if(validateC()){
+                $(this).tab('show');
+              }
+            }
+          });
+      });
+        $("#my_form")[0].reset();
+      });
+      $("#nx-bt01").click(function(){
+        if(validateR()){
+          $('.nav-tabs a[href="#menu1"]').tab('show');
+        }
+      });
+      $("#nx-bt02").click(function(){
+        if(validateP()){
+          $('.nav-tabs a[href="#menu2"]').tab('show');
+        }
+      });
+      $("#pv-bt01").click(function(){
+        if(validateP()){
+          $('.nav-tabs a[href="#home"]').tab('show');
+        }
+      });
+      $("#pv-bt02").click(function(){
+        if(validateC()){
+          $('.nav-tabs a[href="#menu1"]').tab('show');
+        }
+      });
+      $('.nav-tabs a[href="#menu1"]').one("shown.bs.tab",function(){
+          $('#st1').removeClass("active").addClass('complete');
+          $('#st2').addClass('active');
+          $('.nav-tabs a[href="#home"]').click(function(){
+            activeTab=$("li.active a").attr("href");
+            if(activeTab=="#home"){
+              if(validateR()){
+                $(this).tab('show');
+              }
+            }
+            else if(activeTab="#menu1"){
+              if(validateP()){
+                $(this).tab('show');
+              }
+            }
+            else{
+              if(validateC()){
+                $(this).tab('show');
+              }
+            }
+          });
+          $('.nav-tabs a[href="#menu1"]').click(function(){
+            activeTab=$("li.active a").attr("href");
+            if(activeTab=="#home"){
+              if(validateR()){
+                $(this).tab('show');
+              }
+            }
+            else if(activeTab="#menu1"){
+              if(validateP()){
+                $(this).tab('show');
+              }
+            }
+            else{
+              if(validateC()){
+                $(this).tab('show');
+              }
+            }
+          });
+      });
+      $('.nav-tabs a[href="#menu2"]').one("shown.bs.tab",function(){
+          $('#st2').removeClass('active').addClass('complete');
+          $('#st3').addClass('active');
+          $('.nav-tabs a[href="#menu2"]').click(function(){
+            activeTab=$("li.active a").attr("href");
+            if(activeTab=="#home"){
+              if(validateR()){
+                $(this).tab('show');
+              }
+            }
+            else if(activeTab="#menu1"){
+              if(validateP()){
+                $(this).tab('show');
+              }
+            }
+            else{
+              if(validateC()){
+                $(this).tab('show');
+              }
+            }
+          });
+      });
+      $("#my_form").submit(function(event){
+        event.preventDefault();
+
+        if(validateC()){
+          var res={};
+          $('#st3').removeClass("active").addClass('complete');
+          res["username"]=$("#uname").val();
+          res["password"]=$("#pwd").val();
+          res["full name"]=$("#fname").val();
+          res["Date of birth"]=$("#dob").val();
+          res["Gender"]=$("#gender").val();
+          res["E-mail"]=$("#email").val();
+          res["Contact Number"]=$("#mob").val();
+          res["Address"]=$("#adrs").val();
+          $("#rslt").append("<p>"+JSON.stringify(res)+"</p>");
+          $("#fm").hide();
+          $("#rst").show();
+        }
+      });
+  });
+  </script>
+</html>
